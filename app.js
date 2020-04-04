@@ -54,6 +54,9 @@ option = document.createElement('option');
 option.text = "Red";
 option.value = `255,0,0`;
 selectColor.add(option);
+option = document.createElement('option');
+option.text = "Rainbow";
+selectColor.add(option);
 selectColor.addEventListener('change', updateColor);
 
 nav.appendChild(btnReset);
@@ -92,7 +95,16 @@ document.body.appendChild(main);
 
 function etchSketch(e){
     if(e.target.className === 'item'){
+        if(selectColor.value !== "Select Color"){
         e.target.style.backgroundColor = `rgba(${selectColor.value},${randomAlpha()})`;
+        }
+        if(selectColor.value === 'Rainbow'){
+            e.target.style.backgroundColor = `rgb(${Math.floor(randomAlpha()*256)}, ${Math.floor(randomAlpha()*256)}, ${Math.floor(randomAlpha()*256)})`;
+            
+        }
+        else{
+            e.target.style.backgroundColor = color;
+        }
     }
 }
 
