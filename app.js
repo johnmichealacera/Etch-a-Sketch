@@ -1,31 +1,32 @@
-document.body.style.backgroundColor = "rgba(0,0,0,0.2)";
-document.body.style.margin = "50px 650px";
+let btnSketch = document.getElementById('sketch');
+btnSketch.addEventListener('click', sketch);
 
+function sketch(){
+btnSketch.style.display = "none";
+document.body.innerHTML = "";
+
+let size = prompt("Enter desired grid size: ");
 let color = "white";
-let size = 16;
 
 let header = document.createElement('header');
 header.style.textAlign = "center";
-header.style.margin = "20px 0";
 
 let title = document.createElement('h1');
-title.innerHTML = "Etch a Sketch";
-title.style.margin = "0";
-header.appendChild(title);
+title.innerHTML = "Etch-a-Sketch";
+title.style.marginTop = "50px";
+title.style.marginBottom = '0';
 
-let subTitle = document.createElement('p');
-subTitle.innerHTML = "An Odin-based Project";
-subTitle.style.margin = "0";
-header.appendChild(subTitle);
+let caption = document.createElement('p');
+caption.innerHTML = "An Odin-based Project";
+
+header.appendChild(title);
+header.appendChild(caption);
 
 document.body.appendChild(header);
 
-let main = document.createElement('main');
-
-let mainButtons = document.createElement('div');
-mainButtons.style.display = "flex";
-mainButtons.style.justifyContent = "center";
-mainButtons.style.margin = "10px 0";
+let nav = document.createElement('nav');
+nav.style.display = "flex";
+nav.style.justifyContent = "center";
 
 let btnReset = document.createElement('button');
 btnReset.innerHTML = "Reset";
@@ -33,82 +34,81 @@ btnReset.addEventListener('click', reset);
 
 let btnResize = document.createElement('button');
 btnResize.innerHTML = "Resize";
-btnResize.addEventListener('click', resize);
+btnResize.addEventListener('click', sketch);
 
-let btnBlack = document.createElement('button');
-btnBlack.innerHTML = "Black";
-btnBlack.addEventListener('click', makeBlack);
+let selectColor = document.createElement('select');
+let option = document.createElement('option');
+option.text = "Select Color";
+option.disabled = "true";
+option.selected = "true";
+selectColor.add(option);
+option = document.createElement('option');
+option.text = "White";
+option.value = `255,255,255`;
+selectColor.add(option);
+option = document.createElement('option');
+option.text = "Black";
+option.value = `0,0,0`;
+selectColor.add(option);
+option = document.createElement('option');
+option.text = "Red";
+option.value = `255,0,0`;
+selectColor.add(option);
+selectColor.addEventListener('change', updateColor);
 
-let btnWhite = document.createElement('button');
-btnWhite.innerHTML = "White";
-btnWhite.addEventListener('click', makeWhite);
+nav.appendChild(btnReset);
+nav.appendChild(btnResize);
+nav.appendChild(selectColor);
 
-let btnRed = document.createElement('button');
-btnRed.innerHTML = "Red";
-btnRed.addEventListener('click', makeRed);
+document.body.appendChild(nav);
 
-mainButtons.appendChild(btnReset);
-mainButtons.appendChild(btnResize);
-mainButtons.appendChild(btnBlack);
-mainButtons.appendChild(btnWhite);
-mainButtons.appendChild(btnRed);
+let main = document.createElement('main');
+main.style.margin = "10px 200px";
 
-main.appendChild(mainButtons);
+let grids = document.createElement('div');
+grids.className = "grid";
+grids.style.display = "grid";
+grids.style.height = "700px";
+grids.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+grids.style.backgroundImage = "url('https://cache.popcultcha.com.au/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/b/a/ban57020-one-piece-monkey-d.-luffy-20th-anniversary-figuarts-zero-5.5_-statue-01.1567579404.png')";
+grids.style.backgroundRepeat = "no-repeat";
+grids.style.backgroundSize = "cover";
+grids.style.opacity = "0.8";
+grids.style.border = "2px solid black";
+grids.addEventListener('mouseover', etchSketch);
+
+let grid;
+
+for(let i=0; i<size*size; i++){
+grid = document.createElement('div');
+grid.className = "item";
+grid.style.border = "1px solid black";
+grids.appendChild(grid);
+}
+
+main.appendChild(grids);
 
 document.body.appendChild(main);
 
-let row, square, sketch;
-sketch = document.createElement('div');
-sketch.className = "sketch";
-sketch.style.backgroundImage = `url("https://wallpaperaccess.com/full/17350.jpg")`;
-sketch.style.backgroundSize = "cover";
-sketch.style.backgroundRepeat = "no-repeat";
-sketch.style.backgroundPosition = "center";
-
-for(let i = 0; i<size; i++){
-row = document.createElement('div');
-row.style.display = "flex";
-sketch.appendChild(row);
-    for(let i=0; i<size; i++){
-        square = document.createElement('div');
-        square.className = "square";
-        square.style.width = "40px";
-        square.style.height = "40px";
-        square.style.border = "2px solid rgba(0,0,0,0.8)";
-        row.appendChild(square);
+function etchSketch(e){
+    if(e.target.className === 'item'){
+        e.target.style.backgroundColor = `rgba(${selectColor.value},${randomAlpha()})`;
     }
 }
-
-
-main.appendChild(sketch);
 
 function reset(){
-    let squares = document.getElementsByClassName('square');
-    for(square of squares){
-    square.style.backgroundColor = "";
+    let items = document.getElementsByClassName('item');
+    for(item of items){
+        item.style.backgroundColor = "";
     }
 }
 
-function resize(){
-    let newSize = prompt("Please enter the size of the grid");
-    size = newSize;
+function updateColor(){
+    color = selectColor.value;
 }
 
-function makeBlack(){
-    color = "black";
+function randomAlpha(){
+    return Math.random();
 }
 
-function makeWhite(){
-    color = "white";
 }
-
-function makeRed(){
-    color = "red";
-}
-
-let squares = document.getElementsByClassName('square');
-sketch.addEventListener('mouseover', function(e){
-    if(e.target.className === 'square'){
-    e.target.style.backgroundColor = color;
-    }
-})
