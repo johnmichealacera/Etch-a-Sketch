@@ -43,19 +43,19 @@ option.disabled = "true";
 option.selected = "true";
 selectColor.add(option);
 option = document.createElement('option');
-option.text = "White";
+option.text = "White Tone";
 option.value = `255,255,255`;
 selectColor.add(option);
 option = document.createElement('option');
-option.text = "Black";
+option.text = "Black Tone";
 option.value = `0,0,0`;
 selectColor.add(option);
 option = document.createElement('option');
-option.text = "Red";
+option.text = "Red Tone";
 option.value = `255,0,0`;
 selectColor.add(option);
 option = document.createElement('option');
-option.text = "Rainbow";
+option.text = "Rainbow Tone";
 selectColor.add(option);
 selectColor.addEventListener('change', updateColor);
 
@@ -98,7 +98,7 @@ function etchSketch(e){
         if(selectColor.value !== "Select Color"){
         e.target.style.backgroundColor = `rgba(${selectColor.value},${randomAlpha()})`;
         }
-        if(selectColor.value === 'Rainbow'){
+        if(selectColor.value === 'Rainbow Tone'){
             e.target.style.backgroundColor = `rgb(${Math.floor(randomAlpha()*256)}, ${Math.floor(randomAlpha()*256)}, ${Math.floor(randomAlpha()*256)})`;
             
         }
